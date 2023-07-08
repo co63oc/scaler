@@ -204,7 +204,9 @@ func (s *Simple) gcLoop() {
 			if element := s.idleInstance.Back(); element != nil {
 				instance := element.Value.(*model.Instance)
 				idleDuration := time.Now().Sub(instance.LastIdleTime)
-				if idleDuration > s.config.IdleDurationBeforeGC {
+                                checkDuration :=  time.Duration(300 /  s.idleInstance.Len()) * time.Second
+				//if idleDuration > s.config.IdleDurationBeforeGC {
+				if idleDuration > checkDuration {
 					//need GC
 					s.idleInstance.Remove(element)
 					delete(s.instances, instance.Id)
