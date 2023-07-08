@@ -200,6 +200,7 @@ func (s *Simple) gcLoop() {
 	for range ticker.C {
 		for {
 			s.mu.Lock()
+                        if s.idleInstance.Len() > 1 {
 			if element := s.idleInstance.Back(); element != nil {
 				instance := element.Value.(*model.Instance)
 				idleDuration := time.Now().Sub(instance.LastIdleTime)
@@ -219,6 +220,7 @@ func (s *Simple) gcLoop() {
 					continue
 				}
 			}
+                        }
 			s.mu.Unlock()
 			break
 		}
