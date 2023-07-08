@@ -17,11 +17,12 @@ import (
 	"container/list"
 	"context"
 	"fmt"
-	"google.golang.org/grpc/codes"
-	"google.golang.org/grpc/status"
 	"log"
 	"sync"
 	"time"
+
+	"google.golang.org/grpc/codes"
+	"google.golang.org/grpc/status"
 
 	"github.com/AliyunContainerService/scaler/pkg/config"
 	"github.com/AliyunContainerService/scaler/pkg/model"
@@ -200,29 +201,29 @@ func (s *Simple) gcLoop() {
 	for range ticker.C {
 		for {
 			s.mu.Lock()
-                        if s.idleInstance.Len() > 1 {
-			if element := s.idleInstance.Back(); element != nil {
-				instance := element.Value.(*model.Instance)
-				idleDuration := time.Now().Sub(instance.LastIdleTime)
-                                checkDuration :=  time.Duration(300 /  s.idleInstance.Len()) * time.Second
-				//if idleDuration > s.config.IdleDurationBeforeGC {
-				if idleDuration > checkDuration {
-					//need GC
-					s.idleInstance.Remove(element)
-					delete(s.instances, instance.Id)
-					s.mu.Unlock()
-					go func() {
-						reason := fmt.Sprintf("Idle duration: %fs, excceed configured duration: %fs", idleDuration.Seconds(), s.config.IdleDurationBeforeGC.Seconds())
-						ctx := context.Background()
-						ctx, cancel := context.WithTimeout(ctx, 30*time.Second)
-						defer cancel()
-						s.deleteSlot(ctx, uuid.NewString(), instance.Slot.Id, instance.Id, instance.Meta.Key, reason)
-					}()
+			if s.idleInstance.Len() > 1 {
+				if element := s.idleInstance.Back(); element != nil {
+					instance := element.Value.(*model.Instance)
+					idleDuration := time.Now().Sub(instance.LastIdleTime)
+					checkDuration := time.Duration(300/s.idleInstance.Len()) * time.Second
+					//if idleDuration > s.config.IdleDurationBeforeGC {
+					if idleDuration > checkDuration {
+						//need GC
+						s.idleInstance.Remove(element)
+						delete(s.instances, instance.Id)
+						s.mu.Unlock()
+						go func() {
+							reason := fmt.Sprintf("Idle duration: %fs, excceed configured duration: %fs", idleDuration.Seconds(), s.config.IdleDurationBeforeGC.Seconds())
+							ctx := context.Background()
+							ctx, cancel := context.WithTimeout(ctx, 30*time.Second)
+							defer cancel()
+							s.deleteSlot(ctx, uuid.NewString(), instance.Slot.Id, instance.Id, instance.Meta.Key, reason)
+						}()
 
-					continue
+						continue
+					}
 				}
 			}
-                        }
 			s.mu.Unlock()
 			break
 		}
