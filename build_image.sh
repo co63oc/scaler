@@ -1,3 +1,5 @@
+docker ps -a | awk '{print $1}' | xargs -i{} docker rm {}
+
 docker images | grep "^<none" | awk '{print $3}' | xargs -i{} docker rmi {}
 docker images | grep "scaler" | grep "<none" | awk '{print $3}' | xargs -i{} docker rmi {}
 
