@@ -201,11 +201,17 @@ func (s *Simple) gcLoop() {
 	for range ticker.C {
 		for {
 			s.mu.Lock()
-			if s.idleInstance.Len() > 1 {
+			if s.idleInstance.Len() > 0 {
 				if element := s.idleInstance.Back(); element != nil {
 					instance := element.Value.(*model.Instance)
 					idleDuration := time.Now().Sub(instance.LastIdleTime)
-					checkDuration := time.Duration(300/s.idleInstance.Len()) * time.Second
+                                        calc_max := 400
+                                        add_len := calc_max
+                                        if s.idleInstance.Len() >= calc_max:
+                                            add_len := calc_max
+                                        else:
+                                            add_len := s.idleInstance.Len()
+					checkDuration := time.Duration((calc_max/add_len) + add_len) * time.Second
 					//if idleDuration > s.config.IdleDurationBeforeGC {
 					if idleDuration > checkDuration {
 						//need GC
