@@ -75,6 +75,7 @@ func (s *Simple) Assign(ctx context.Context, request *pb.AssignRequest) (*pb.Ass
 	log.Printf("Assign, request id: %s", request.RequestId)
 
 	// 创建实例
+/*
 	if s.idleInstance.Len() == 0 {
 		go func() {
 			//Create new Instance
@@ -117,6 +118,7 @@ func (s *Simple) Assign(ctx context.Context, request *pb.AssignRequest) (*pb.Ass
 			log.Printf("request id: %s, instance %s for app %s is created, init latency: %dms", request.RequestId, instance.Id, instance.Meta.Key, instance.InitDurationInMs)
 		}()
 	}
+*/
 
 	//s.mu.Lock()
 	// var count = 0
