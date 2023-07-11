@@ -1,3 +1,4 @@
+systemctl status docker || systemctl start docker
 docker ps -a | awk '{print $1}' | grep -vi "container" | xargs -i{} docker rm {}
 
 docker images | grep "^<none" | awk '{print $3}' | xargs -i{} docker rmi {}
