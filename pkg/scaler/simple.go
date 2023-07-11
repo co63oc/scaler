@@ -142,7 +142,7 @@ func (s *Simple) Assign(ctx context.Context, request *pb.AssignRequest) (*pb.Ass
 		s.mu.Unlock()
 		count++
 		if count >= 30 {
-			errorMessage := fmt.Sprintf("Assign RequestId: %s count :%d ", request.RequestId, count)
+			errorMessage := fmt.Sprintf("Assign request id: %s, count :%d ", request.RequestId, count)
 			log.Printf(errorMessage)
 			return nil, status.Errorf(codes.Internal, errorMessage)
 		}
