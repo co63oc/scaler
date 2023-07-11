@@ -32,6 +32,7 @@ var DefaultConfig = Config{
 	// IdleDurationBeforeGC: 5 * time.Minute,
 
 	// 51.2059
+	// 51.4524
 	// GcInterval:           20 * time.Second,
 	// IdleDurationBeforeGC: 6 * time.Minute,
 

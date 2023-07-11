@@ -205,14 +205,14 @@ func (s *Simple) gcLoop() {
 				if element := s.idleInstance.Back(); element != nil {
 					instance := element.Value.(*model.Instance)
 					idleDuration := time.Now().Sub(instance.LastIdleTime)
-                    calc_max := 400
-                    add_len := calc_max
+                    calc_max := 290
+                    calc_len := calc_max
                     if s.idleInstance.Len() >= calc_max {
-                        add_len = calc_max
+                        calc_len = calc_max
                     } else {
-                        add_len = s.idleInstance.Len()
+                        calc_len = s.idleInstance.Len()
                     }
-					checkDuration := time.Duration((calc_max/add_len) + add_len) * time.Second
+					checkDuration := time.Duration((calc_max/calc_len) + calc_len) * time.Second
 					//if idleDuration > s.config.IdleDurationBeforeGC {
 					if idleDuration > checkDuration {
 						//need GC
